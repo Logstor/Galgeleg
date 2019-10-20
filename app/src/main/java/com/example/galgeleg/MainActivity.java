@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		// Textview update
 		txt_word.setText(logic.getSynligtOrd());
+		
+		// Update image
+		updateImage();
 	}
 	
 	@Override
@@ -58,7 +61,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		if (v==btn_guess)
 		{
-		
+			// Guess
+			logic.gætBogstav(txt_guess.getText().toString());
+			// Update Screen
+			update();
+		}
+	}
+	
+	private void updateImage()
+	{
+		switch (logic.getAntalForkerteBogstaver())
+		{
+			case 0:
+				break;
+			case 1:
+				img_galge.setImageResource(R.drawable.forkert1vec);
+				break;
+			case 2:
+				img_galge.setImageResource(R.drawable.forkert2vec);
+				break;
+			case 3:
+				img_galge.setImageResource(R.drawable.forkert3vec);
+				break;
+			case 4:
+				img_galge.setImageResource(R.drawable.forkert4vec);
+				break;
+			case 5:
+				img_galge.setImageResource(R.drawable.forkert5vec);
+				break;
+			case 6:
+				img_galge.setImageResource(R.drawable.forkert6vec);
+				break;
 		}
 	}
 }

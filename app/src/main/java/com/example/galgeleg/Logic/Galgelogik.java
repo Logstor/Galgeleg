@@ -34,6 +34,7 @@ public class Galgelogik
     muligeOrd.add("skovsnegl");
     muligeOrd.add("solsort");
     muligeOrd.add("nitten");
+    muligeOrd.add("pusling");
     nulstil();
   }
   
