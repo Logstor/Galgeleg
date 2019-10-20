@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		// Textview update
 		txt_word.setText(logic.getSynligtOrd());
+		txt_guess.setText("");
 		
 		// Update image
 		updateImage();
