@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GalgeLeg</string>
+
+    <string name="editHint">Gæt bogstav her</string>
+
+    <string name="gæt">Gæt</string>
 </resources>

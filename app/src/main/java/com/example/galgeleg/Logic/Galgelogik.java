@@ -88,7 +88,8 @@ public class Galgelogik
   }
 
 
-  private void opdaterSynligtOrd() {
+  private void opdaterSynligtOrd()
+  {
     synligtOrd = "";
     spilletErVundet = true;
     for (int n = 0; n < ordet.length(); n++) {
