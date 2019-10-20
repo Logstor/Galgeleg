@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		else
 		{
 			// Change Button text
-			btn_guess.setText("Reset");
+			btn_guess.setText(R.string.reset);
 		}
 		
 	}

@@ -42,8 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gæt"
-        app:layout_constraintTop_toBottomOf="@id/txt_guess"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/galge"
+        app:layout_constraintStart_toEndOf="@id/txt_guess" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
