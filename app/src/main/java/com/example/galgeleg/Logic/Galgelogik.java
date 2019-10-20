@@ -90,17 +90,19 @@ public class Galgelogik
 
   private void opdaterSynligtOrd()
   {
-    synligtOrd = "";
+  	StringBuilder sb = new StringBuilder();
     spilletErVundet = true;
     for (int n = 0; n < ordet.length(); n++) {
       String bogstav = ordet.substring(n, n + 1);
       if (brugteBogstaver.contains(bogstav)) {
-        synligtOrd = synligtOrd + bogstav;
+        sb.append(bogstav);
       } else {
-        synligtOrd = synligtOrd + "*";
+        sb.append("*");
         spilletErVundet = false;
       }
     }
+    // Update the word
+    synligtOrd = sb.toString();
   }
 
   public void gætBogstav(String bogstav) {
