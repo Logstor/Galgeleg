@@ -53,8 +53,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		txt_word.setText(logic.getSynligtOrd());
 		txt_guess.setText("");
 		
-		// Update image
-		updateImage();
+		if (!logic.erSpilletSlut())
+		{
+			// Update image
+			updateImage();
+		}
+		else
+		{
+			// Change Button text
+			btn_guess.setText("Reset");
+		}
+		
 	}
 	
 	@Override
@@ -62,10 +71,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		if (v==btn_guess)
 		{
-			// Guess
-			logic.gætBogstav(txt_guess.getText().toString());
-			// Update Screen
-			update();
+			if (!logic.erSpilletSlut())
+			{
+				// Guess
+				logic.gætBogstav(txt_guess.getText().toString());
+				// Update Screen
+				update();
+			}
+			else
+				reset();
 		}
 	}
 	
@@ -73,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		switch (logic.getAntalForkerteBogstaver())
 		{
-			case 0:
-				break;
 			case 1:
 				img_galge.setImageResource(R.drawable.forkert1vec);
 				break;
@@ -94,5 +106,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				img_galge.setImageResource(R.drawable.forkert6vec);
 				break;
 		}
+	}
+	
+	private void reset()
+	{
+		// Reset logic
+		logic.nulstil();
+		// Reset Image
+		img_galge.setImageResource(R.drawable.galgevec);
+		// Reset Button text
+		btn_guess.setText(R.string.gæt);
+		// Update
+		update();
 	}
 }
