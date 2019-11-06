@@ -1,6 +1,8 @@
 package com.example.galgeleg;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +11,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.galgeleg.Fragments.MainMenuFragment;
 import com.example.galgeleg.Logic.Galgelogik;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
+public class MainActivity extends FragmentActivity implements View.OnClickListener
 {
 	// Logic
 	private Galgelogik logic = Galgelogik.getInstance();
@@ -29,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		setContentView(R.layout.activity_main);
 		
 		setup();
+		
+		//TODO: This is testing
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		ft.replace(R.id.layout, new MainMenuFragment());
+		ft.commit();
 	}
 	
 	protected void setup()
