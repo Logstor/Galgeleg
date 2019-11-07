@@ -46,8 +46,9 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
-	 * @param view
+	 * This methods gets all element references, and
+	 * sets all onClickListeners.
+	 * @param view from onViewCreated
 	 */
 	private void setup(View view)
 	{
@@ -65,9 +66,9 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
+	 * Updates the game state.
 	 */
-	protected void update()
+	private void update()
 	{
 		// Textview update
 		txt_view.setText(logic.getSynligtOrd());
@@ -87,7 +88,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
+	 * Resets the game.
 	 */
 	private void reset()
 	{
@@ -102,7 +103,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
+	 * Updates the drawn image.
 	 */
 	private void updateImage()
 	{
