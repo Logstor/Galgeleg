@@ -5,4 +5,12 @@
 
     <string name="gæt">Gæt</string>
     <string name="reset">Reset</string>
+
+    <string name="btn_newGame">New Game</string>
+    <string name="btn_highscores">Highscores</string>
+    <string name="btn_settings">Indstillinger</string>
+
+    <string name="btn_mainMenu_textSize">30sp</string>
+    <string name="btn_mainMenu_width">250dp</string>
+    <string name="mainMenu_spacing">15dp</string>
 </resources>
