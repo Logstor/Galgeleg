@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,14 @@ import androidx.fragment.app.Fragment;
 import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameFragment extends Fragment implements View.OnClickListener
 {
 	private ImageView image;
 	private TextView txt_view;
-	private Button btn_guess;
-	private EditText txt_edit;
+	private List<Button> buttons;
 	
 	private Galgelogik logic = Galgelogik.getInstance();
 	
@@ -52,14 +55,12 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void setup(View view)
 	{
+		// Create all buttons
+		createButtons(view);
+		
 		// Find element references
 		image		= view.findViewById(R.id.galge);
 		txt_view 	= view.findViewById(R.id.txt_word);
-		btn_guess	= view.findViewById(R.id.guess);
-		txt_edit	= view.findViewById(R.id.txt_guess);
-		
-		// Listeners
-		btn_guess.setOnClickListener(this);
 		
 		// Set the first picture
 		image.setImageResource(R.drawable.galgevec);
@@ -72,17 +73,11 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	{
 		// Textview update
 		txt_view.setText(logic.getSynligtOrd());
-		txt_edit.setText("");
 		
 		if (!logic.erSpilletSlut())
 		{
 			// Update image
 			updateImage();
-		}
-		else
-		{
-			// Change Button text
-			btn_guess.setText(R.string.reset);
 		}
 	}
 	
@@ -95,8 +90,6 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		logic.nulstil();
 		// Reset Image
 		image.setImageResource(R.drawable.galgevec);
-		// Reset Button text
-		btn_guess.setText(R.string.gæt);
 		// Update
 		update();
 	}
@@ -127,5 +120,78 @@ public class GameFragment extends Fragment implements View.OnClickListener
 				image.setImageResource(R.drawable.forkert6vec);
 				break;
 		}
+	}
+	
+	/**
+	 * This method creates the whole keyboard.
+	 */
+	private void createButtons(View view)
+	{
+		// Get Table layout and alphabet
+		TableLayout layout = view.findViewById(R.id.table);
+		String[] alphabet = getResources().getStringArray(R.array.alphabet);
+		
+		// Constants
+		final int LENGTH = alphabet.length;
+		final int BUTTON_ROW = getResources().getInteger(R.integer.btnPerRow);
+		
+		// Create the ArrayList
+		buttons = new ArrayList<>(LENGTH);
+		
+		// Button params
+		TableRow.LayoutParams params = new TableRow.LayoutParams();
+		params.weight = 1f;
+		
+		// Go through all buttons and add them to the table
+		TableRow currRow = new TableRow(getContext());
+		for (int i=0; i < LENGTH ; i++)
+		{
+			// If true then create new row
+			if (i % BUTTON_ROW == 0)
+			{
+				layout.addView(currRow);
+				currRow = new TableRow(getContext());
+			}
+			
+			// Create button
+			Button currButton = new Button(getContext());
+			
+			// Set button params
+			currButton.setText(alphabet[i]);
+			currButton.setLayoutParams(params);
+			
+			// Set buttons onClickListener
+			setButtonListener(currButton);
+			
+			// Add Button to TableRow
+			currRow.addView(currButton);
+			
+			// Add to button list
+			buttons.add(currButton);
+		}
+		
+		// Lastly add to TableLayout
+		layout.addView(currRow);
+	}
+	
+	/**
+	 * Set the correct onClickListener for the
+	 * alphabet letters.
+	 * @param btn Button to set
+	 */
+	private void setButtonListener(final Button btn)
+	{
+		btn.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				// Set inactive
+				btn.setEnabled(false);
+				
+				// Update logic
+				//TODO: Implement this
+			}
+		});
 	}
 }
