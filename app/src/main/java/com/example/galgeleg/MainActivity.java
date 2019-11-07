@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.galgeleg.Fragments.GameFragment;
 import com.example.galgeleg.Fragments.MainMenuFragment;
 import com.example.galgeleg.Logic.Galgelogik;
 
@@ -31,12 +32,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		setup();
+		//setup();
 		
 		//TODO: This is testing
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.layout, new MainMenuFragment());
+		ft.replace(R.id.layout, new GameFragment());
 		ft.commit();
 	}
 	
