@@ -84,7 +84,6 @@ public class GameFragment extends Fragment implements View.OnClickListener
 			// Change Button text
 			btn_guess.setText(R.string.reset);
 		}
-		
 	}
 	
 	/**
