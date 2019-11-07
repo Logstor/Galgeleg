@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
 
 public class GameFragment extends Fragment implements View.OnClickListener
@@ -21,6 +22,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	private TextView txt_view;
 	private Button btn_guess;
 	private EditText txt_edit;
+	
+	private Galgelogik logic = Galgelogik.getInstance();
 	
 	@Nullable
 	@Override
@@ -36,6 +39,16 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		setup(view);
 	}
 	
+	@Override
+	public void onClick(View v)
+	{
+		//TODO: Implement me!
+	}
+	
+	/**
+	 *
+	 * @param view
+	 */
 	private void setup(View view)
 	{
 		// Find element references
@@ -51,9 +64,68 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		image.setImageResource(R.drawable.galgevec);
 	}
 	
-	@Override
-	public void onClick(View v)
+	/**
+	 *
+	 */
+	protected void update()
 	{
-		//TODO: Implement me!
+		// Textview update
+		txt_view.setText(logic.getSynligtOrd());
+		txt_edit.setText("");
+		
+		if (!logic.erSpilletSlut())
+		{
+			// Update image
+			updateImage();
+		}
+		else
+		{
+			// Change Button text
+			btn_guess.setText(R.string.reset);
+		}
+		
+	}
+	
+	/**
+	 *
+	 */
+	private void reset()
+	{
+		// Reset logic
+		logic.nulstil();
+		// Reset Image
+		image.setImageResource(R.drawable.galgevec);
+		// Reset Button text
+		btn_guess.setText(R.string.gæt);
+		// Update
+		update();
+	}
+	
+	/**
+	 *
+	 */
+	private void updateImage()
+	{
+		switch (logic.getAntalForkerteBogstaver())
+		{
+			case 1:
+				image.setImageResource(R.drawable.forkert1vec);
+				break;
+			case 2:
+				image.setImageResource(R.drawable.forkert2vec);
+				break;
+			case 3:
+				image.setImageResource(R.drawable.forkert3vec);
+				break;
+			case 4:
+				image.setImageResource(R.drawable.forkert4vec);
+				break;
+			case 5:
+				image.setImageResource(R.drawable.forkert5vec);
+				break;
+			case 6:
+				image.setImageResource(R.drawable.forkert6vec);
+				break;
+		}
 	}
 }
