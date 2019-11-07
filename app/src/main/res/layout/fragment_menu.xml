@@ -24,32 +24,35 @@
 
         <Button
             android:id="@+id/btn_newGame"
-            android:layout_width="280dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_newGame"
-            android:textSize="35sp"/>
+            android:textSize="50sp"
+            style="@android:style/Widget.Button.Inset"/>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/btn_highscores"
-            android:layout_width="280dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_highscores"
-            android:textSize="35sp" />
+            android:textSize="50sp"
+            style="@android:style/Widget.Button.Inset"/>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/btn_settings"
-            android:layout_width="280dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_settings"
-            android:textSize="35sp" />
+            android:textSize="50sp"
+            style="@android:style/Widget.Button.Inset"/>
 
     </LinearLayout>
 
