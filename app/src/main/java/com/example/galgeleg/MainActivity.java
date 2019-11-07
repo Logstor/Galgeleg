@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.galgeleg.Fragments.MainMenuFragment;
 import com.example.galgeleg.Logic.Galgelogik;
@@ -31,11 +29,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//TODO: This is testing
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		ft.replace(R.id.frame, new MainMenuFragment());
-		ft.commit();
+		// Start the main menu right away
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.frame, new MainMenuFragment())
+				.commit();
 	}
 	
 	protected void setup()
