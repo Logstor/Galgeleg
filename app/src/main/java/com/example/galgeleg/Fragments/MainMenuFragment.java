@@ -5,17 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.galgeleg.R;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener
 {
 	private Button btn_newGame, btn_highscores, btn_settings;
+	private TextView txt_title;
 	private FragmentManager fragmentManager;
 	
 	@Nullable
@@ -43,6 +47,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		btn_newGame 	= view.findViewById(R.id.btn_newGame);
 		btn_highscores	= view.findViewById(R.id.btn_highscores);
 		btn_settings	= view.findViewById(R.id.btn_settings);
+		txt_title		= view.findViewById(R.id.title);
 		
 		// Set onClick listeners
 		btn_newGame.setOnClickListener(this);
@@ -58,15 +63,16 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame, new GameFragment())
 					.addToBackStack(null)
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 					.commit();
 		}
 		else if (v == btn_highscores)
 		{
-		
+			Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
 		}
 		else if (v == btn_settings)
 		{
-		
+			Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

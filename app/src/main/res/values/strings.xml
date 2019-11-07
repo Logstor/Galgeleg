@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">s160107 - GalgeLeg</string>
+    <string name="title">Galgeleg</string>
 
     <string name="editHint">Gæt bogstav her</string>
 
