@@ -15,12 +15,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.galgeleg.R;
 
-public class GameFragment extends Fragment
+public class GameFragment extends Fragment implements View.OnClickListener
 {
-	ImageView image;
-	TextView txt_view;
-	Button btn_guess;
-	EditText txt_edit;
+	private ImageView image;
+	private TextView txt_view;
+	private Button btn_guess;
+	private EditText txt_edit;
 	
 	@Nullable
 	@Override
@@ -43,5 +43,17 @@ public class GameFragment extends Fragment
 		txt_view 	= view.findViewById(R.id.txt_word);
 		btn_guess	= view.findViewById(R.id.guess);
 		txt_edit	= view.findViewById(R.id.txt_guess);
+		
+		// Listeners
+		btn_guess.setOnClickListener(this);
+		
+		// Set the first picture
+		image.setImageResource(R.drawable.galgevec);
+	}
+	
+	@Override
+	public void onClick(View v)
+	{
+		//TODO: Implement me!
 	}
 }
