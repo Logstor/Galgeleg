@@ -1,5 +1,7 @@
 package com.example.galgeleg.Persistent;
 
+import android.annotation.SuppressLint;
+
 import com.example.galgeleg.Model.Highscore.Highscore;
 
 public class Save
@@ -34,5 +36,9 @@ public class Save
 	synchronized public void saveHighscore(Highscore highscore)
 	{
 		//TODO: Implement this!
+		@SuppressLint("DefaultLocale")
+		String text = String.format("Score: %d\nName: %s\nDate: %s", highscore.getScore(),
+				highscore.getName(), highscore.getDateTime().toString());
+		System.out.println(String.format("Saving highscore\n%s", text));
 	}
 }

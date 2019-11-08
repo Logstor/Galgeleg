@@ -1,29 +1,25 @@
 package com.example.galgeleg.Model.Highscore;
 
-import com.example.galgeleg.Model.Coordinates;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Highscore
 {
 	//region Fields
-	private int guessedLetters;
+	private int score;
 	private String name;
-	private LocalDateTime dateTime;
-	private Coordinates coords;
+	private Date date;
 	//endregion
 	
 	private Highscore(Builder builder)
 	{
-		this.guessedLetters = builder.score;
+		this.score = builder.score;
 		this.name = builder.name;
-		this.coords = builder.coords;
-		this.dateTime = builder.dateTime;
+		this.date = builder.date;
 	}
 	
-	public int getGuessedLetters()
+	public int getScore()
 	{
-		return guessedLetters;
+		return score;
 	}
 	
 	public String getName()
@@ -31,9 +27,9 @@ public class Highscore
 		return name;
 	}
 	
-	public LocalDateTime getDateTime()
+	public Date getDateTime()
 	{
-		return dateTime;
+		return date;
 	}
 	
 	/**
@@ -44,8 +40,7 @@ public class Highscore
 		//region Fields
 		private final int score;
 		private final String name;
-		private LocalDateTime dateTime;
-		private Coordinates coords = new Coordinates(0.0, 0.0);
+		private Date date;
 		//endregion
 		
 		public Builder(int score, String name)
@@ -54,15 +49,9 @@ public class Highscore
 			this.name = name;
 		}
 		
-		public Builder dateTime(LocalDateTime dateTime)
+		public Builder date(Date date)
 		{
-			this.dateTime = dateTime;
-			return this;
-		}
-		
-		public Builder coords(Coordinates coords)
-		{
-			this.coords = coords;
+			this.date = date;
 			return this;
 		}
 		

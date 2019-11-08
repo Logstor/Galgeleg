@@ -1,6 +1,7 @@
 package com.example.galgeleg.Fragments;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.galgeleg.Logic.Galgelogik;
+import com.example.galgeleg.Model.Highscore.Highscore;
+import com.example.galgeleg.Persistent.Save;
 import com.example.galgeleg.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class GameFragment extends Fragment implements View.OnClickListener
@@ -189,7 +194,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		disableButtons();
 		
 		// Save Highscore
-		
+		saveHighscore();
 		
 		// Go back to main menu
 		if (getFragmentManager() != null)
@@ -204,9 +209,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 			}
 		}
 		else
-		{
-			System.err.println("ERROR: getFragmentManager() == null");
-		}
+		{ System.err.println("ERROR: getFragmentManager() == null"); }
 	}
 	
 	/**
@@ -315,5 +318,52 @@ public class GameFragment extends Fragment implements View.OnClickListener
 				update(btn);
 			}
 		});
+	}
+	
+	/**
+	 * Saves the highscore on a different thread.
+	 */
+	@SuppressLint("StaticFieldLeak")
+	private void saveHighscore()
+	{
+		//FIXME: Fix this to actually prompt for a name
+		final String name = "Test";
+		
+		// Save the highscore on different thread
+		new AsyncTask<Void, Void, Void>()
+		{
+			@Override
+			protected void onPreExecute()
+			{
+				System.out.println("Trying to save Highscore");
+			}
+			
+			@Override
+			protected Void doInBackground(Void... voids)
+			{
+				// Get saving instance
+				Save saver = Save.getInstance();
+				
+				// Get the date and time
+				Date date = Calendar.getInstance()
+						.getTime();
+				
+				// Build the highscore
+				Highscore high = new Highscore.Builder(score, name)
+						.date(date)
+						.build();
+				
+				// Save it
+				saver.saveHighscore(high);
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void aVoid)
+			{
+				System.out.println("Highscore saved!");
+			}
+		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 }
