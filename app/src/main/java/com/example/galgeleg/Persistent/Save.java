@@ -1,5 +1,7 @@
 package com.example.galgeleg.Persistent;
 
+import com.example.galgeleg.Model.Highscore.Highscore;
+
 public class Save
 {
 	//region Fields
@@ -8,6 +10,9 @@ public class Save
 	
 	//endregion
 	
+	/**
+	 * Private constructor for the getInstance().
+	 */
 	private Save()
 	{}
 	
@@ -22,8 +27,12 @@ public class Save
 		return instance;
 	}
 	
-	synchronized public void saveHighscore()
+	/**
+	 * Saves a highscore.
+	 * @param highscore Highscore
+	 */
+	synchronized public void saveHighscore(Highscore highscore)
 	{
-	
+		//TODO: Implement this!
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.galgeleg.Fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,11 @@ import java.util.List;
 
 public class GameFragment extends Fragment implements View.OnClickListener
 {
+	private View view;
 	private ImageView image;
-	private TextView txt_view;
+	private TextView txt_view, txt_score;
 	private List<Button> buttons;
+	private int score = 0;
 	
 	private Galgelogik logic = Galgelogik.getInstance();
 	
@@ -32,14 +35,14 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_game, container, false);
+		return view = inflater.inflate(R.layout.fragment_game, container, false);
 	}
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
 	{
 		super.onViewCreated(view, savedInstanceState);
-		setup(view);
+		setup();
 	}
 	
 	@Override
@@ -51,19 +54,18 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	/**
 	 * This methods gets all element references, and
 	 * sets all onClickListeners.
-	 * @param view from onViewCreated
 	 */
-	private void setup(View view)
+	private void setup()
 	{
-		// Create all buttons
-		createButtons(view);
-		
 		// Find element references
 		image		= view.findViewById(R.id.galge);
 		txt_view 	= view.findViewById(R.id.txt_word);
+		txt_score	= view.findViewById(R.id.txt_score);
 		
 		// Set game up
-		reset();
+		resetGame();
+		resetLayout();
+		updateScore();
 	}
 	
 	/**
@@ -71,36 +73,53 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void update(Button btn_Clicked)
 	{
-		// Guess the letter
+		// Guess the letter and update score
 		logic.gætBogstav(btn_Clicked.getText().toString());
+		updateScore();
 		
 		// Textview update
 		txt_view.setText(logic.getSynligtOrd());
 		
+		// Game done
+		if (logic.erSpilletSlut())
+		{
+			gameDone();
+		}
+		
 		// Game not done
-		if (!logic.erSpilletSlut())
+		else
 		{
 			// Update image
 			updateImage();
-		}
-		// Game done
-		else
-		{
-		
 		}
 	}
 	
 	/**
 	 * Resets the game.
 	 */
-	private void reset()
+	private void resetGame()
 	{
 		// Reset logic
 		logic.nulstil();
+	}
+	
+	/**
+	 * Resets all buttons, text and picture.
+	 */
+	private void resetLayout()
+	{
 		// Reset Image
 		image.setImageResource(R.drawable.galgevec);
 		// Reset text
 		txt_view.setText(logic.getSynligtOrd());
+		// Reset buttons
+		if (buttons != null)
+		{
+			for (Button btn : buttons)
+				btn.setEnabled(true);
+		}
+		else
+			createButtons();
 	}
 	
 	/**
@@ -132,9 +151,94 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
+	 * This checks whether last guess was
+	 * correct, and then updates the score
+	 * if so.
+	 */
+	@SuppressLint("DefaultLocale")
+	private void updateScore()
+	{
+		// If last was correct, then add to score
+		if (logic.erSidsteBogstavKorrekt())
+			score++;
+		
+		// Set the text view
+		txt_score.setText( String.format("%s %d", getResources().getString(R.string.score), score) );
+	}
+	
+	/**
+	 * Handles logic when game is done.
+	 */
+	private void gameDone()
+	{
+		if (logic.erSpilletTabt())
+			gameLost();
+		else
+			gameWon();
+	}
+	
+	/**
+	 * Handles logic when game is lost.
+	 */
+	private void gameLost()
+	{
+		// Set score text
+		txt_score.setText(getResources().getString(R.string.tabt));
+		
+		// Set all buttons inactive
+		disableButtons();
+		
+		// Save Highscore
+		
+		
+		// Go back to main menu
+		if (getFragmentManager() != null)
+		{
+			if (getFragmentManager().getBackStackEntryCount() > 0)
+				getFragmentManager().popBackStack();
+			else
+			{
+				getFragmentManager().beginTransaction()
+						.replace(R.id.frame, new MainMenuFragment())
+						.commit();
+			}
+		}
+		else
+		{
+			System.err.println("ERROR: getFragmentManager() == null");
+		}
+	}
+	
+	/**
+	 * Handles logic when game is won.
+	 */
+	private void gameWon()
+	{
+		// Update score text
+		txt_score.setText(getResources().getString(R.string.sejr));
+		
+		// Set buttons inactive
+		disableButtons();
+		
+		// Continue new game
+		continueGame();
+	}
+	
+	/**
+	 * Resets game and layout to start a
+	 * new round.
+	 */
+	private void continueGame()
+	{
+		// Reset game first and then layout
+		resetGame();
+		resetLayout();
+	}
+	
+	/**
 	 * This method creates the whole keyboard.
 	 */
-	private void createButtons(View view)
+	private void createButtons()
 	{
 		// Get Table layout and alphabet
 		TableLayout layout = view.findViewById(R.id.table);
@@ -181,6 +285,15 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		
 		// Lastly add to TableLayout
 		layout.addView(currRow);
+	}
+	
+	/**
+	 * Disables all letter buttons on the screen.
+	 */
+	private void disableButtons()
+	{
+		for (Button btn : buttons)
+			btn.setEnabled(false);
 	}
 	
 	/**

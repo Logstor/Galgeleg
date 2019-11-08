@@ -2,10 +2,9 @@
     <string name="app_name">s160107 - GalgeLeg</string>
     <string name="title">Galgeleg</string>
 
-    <string name="editHint">Gæt bogstav her</string>
-
-    <string name="gæt">Gæt</string>
-    <string name="reset">Reset</string>
+    <string name="score">SCORE</string>
+    <string name="sejr">SEJR!</string>
+    <string name="tabt">TABT!</string>
 
     <string name="btn_newGame">New Game</string>
     <string name="btn_highscores">Highscores</string>
