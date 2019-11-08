@@ -62,22 +62,31 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		image		= view.findViewById(R.id.galge);
 		txt_view 	= view.findViewById(R.id.txt_word);
 		
-		// Set the first picture
-		image.setImageResource(R.drawable.galgevec);
+		// Set game up
+		reset();
 	}
 	
 	/**
 	 * Updates the game state.
 	 */
-	private void update()
+	private void update(Button btn_Clicked)
 	{
+		// Guess the letter
+		logic.gætBogstav(btn_Clicked.getText().toString());
+		
 		// Textview update
 		txt_view.setText(logic.getSynligtOrd());
 		
+		// Game not done
 		if (!logic.erSpilletSlut())
 		{
 			// Update image
 			updateImage();
+		}
+		// Game done
+		else
+		{
+		
 		}
 	}
 	
@@ -90,8 +99,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		logic.nulstil();
 		// Reset Image
 		image.setImageResource(R.drawable.galgevec);
-		// Update
-		update();
+		// Reset text
+		txt_view.setText(logic.getSynligtOrd());
 	}
 	
 	/**
@@ -190,7 +199,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 				btn.setEnabled(false);
 				
 				// Update logic
-				//TODO: Implement this
+				update(btn);
 			}
 		});
 	}
