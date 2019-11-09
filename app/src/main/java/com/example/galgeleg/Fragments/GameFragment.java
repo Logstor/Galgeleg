@@ -1,6 +1,7 @@
 package com.example.galgeleg.Fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -321,7 +323,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 * Saves the highscore on a different thread.
+	 * Prompt for the name of the player, and save
+	 * the highscore on a different thread.
 	 */
 	@SuppressLint("StaticFieldLeak")
 	private void saveHighscore()
@@ -330,16 +333,17 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		final String name = "Test";
 		
 		// Save the highscore on different thread
-		new AsyncTask<Void, Void, Void>()
+		new AsyncTask<Context, Void, Boolean>()
 		{
 			@Override
 			protected void onPreExecute()
 			{
+				//TODO: Debug information - remove
 				System.out.println("Trying to save Highscore");
 			}
 			
 			@Override
-			protected Void doInBackground(Void... voids)
+			protected Boolean doInBackground(Context... contexts)
 			{
 				// Get saving instance
 				Save saver = Save.getInstance();
@@ -354,16 +358,18 @@ public class GameFragment extends Fragment implements View.OnClickListener
 						.build();
 				
 				// Save it
-				saver.saveHighscore(high);
-				
-				return null;
+				return saver.saveHighscore(high, contexts[0]);
 			}
 			
 			@Override
-			protected void onPostExecute(Void aVoid)
+			protected void onPostExecute(Boolean bool)
 			{
-				System.out.println("Highscore saved!");
+				// Give feedback on save
+				if (bool)
+					Toast.makeText(getContext(), R.string.saveSuccess, Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(getContext(), R.string.saveFail, Toast.LENGTH_SHORT).show();
 			}
-		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getContext());
 	}
 }

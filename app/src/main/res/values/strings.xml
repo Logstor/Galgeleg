@@ -10,6 +10,10 @@
     <string name="btn_highscores">Highscores</string>
     <string name="btn_settings">Indstillinger</string>
 
+    <string name="saveFile">scores.dat</string>
+    <string name="saveFail">Saving failure</string>
+    <string name="saveSuccess">Highscore Successfully Saved</string>
+
     <string-array name="alphabet">
         <item>a</item>
         <item>b</item>

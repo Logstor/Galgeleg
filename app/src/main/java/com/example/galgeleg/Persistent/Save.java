@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.example.galgeleg.Model.Highscore.Highscore;
+import com.example.galgeleg.R;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -40,14 +42,21 @@ public class Save
 	/**
 	 * Saves a highscore.
 	 * @param highscore Highscore
+	 * @return True upon success
 	 */
-	synchronized public void saveHighscore(Highscore highscore, Context context)
+	synchronized public boolean saveHighscore(Highscore highscore, Context context)
 	{
-		//TODO: Implement this!
+		// Debug information
 		@SuppressLint("DefaultLocale")
 		String text = String.format("Score: %d\nName: %s\nDate: %s", highscore.getScore(),
 				highscore.getName(), highscore.getDateTime().toString());
 		System.out.println(String.format("Saving highscore\n%s", text));
+		
+		// Get the filename
+		String fileName = context.getResources().getString(R.string.saveFile);
+		
+		// Save it
+		return serializeToFile(highscore, fileName, context);
 	}
 	
 	/**
@@ -61,27 +70,47 @@ public class Save
 	 */
 	synchronized private boolean serializeToFile(Serializable object, String fileName, Context context)
 	{
-		//FIXME: This needs to check whether the file already exists, and then
+		// This needs to check whether the file already exists, and then
 		// Make sure to use the correct ObjectOutputStream to ensure, that file isn't
 		// corrupted.
-		
-		// Open Streams
-		try
-		(
-				// Open streams
-				FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
-				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, 1024);
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream)
-		)
+		if ( new File(context.getFilesDir(), fileName).exists() )
 		{
-			// Write the object and make sure to flush
-			objectOutputStream.writeObject(object);
-			objectOutputStream.flush();
+			// Open Streams
+			try (
+					FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
+					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, 1024);
+					AppendObjectOutputStream objectOutputStream = new AppendObjectOutputStream(bufferedOutputStream)
+					)
+			{
+				// Write the object and make sure to flush
+				objectOutputStream.writeObject(object);
+				objectOutputStream.flush();
+			}
+			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				return false;
+			}
 		}
-		catch (IOException e)
+		
+		
+		else
 		{
-			e.printStackTrace();
-			return false;
+			// Open Streams
+			try
+					(
+							FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
+							BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, 1024);
+							ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream)
+					) {
+				// Write the object and make sure to flush
+				objectOutputStream.writeObject(object);
+				objectOutputStream.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
 		}
 		
 		// Success return true
