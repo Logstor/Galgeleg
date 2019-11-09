@@ -5,9 +5,11 @@ import android.content.Context;
 
 import com.example.galgeleg.Model.Highscore.Highscore;
 
+import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 public class Save
@@ -46,8 +48,6 @@ public class Save
 		String text = String.format("Score: %d\nName: %s\nDate: %s", highscore.getScore(),
 				highscore.getName(), highscore.getDateTime().toString());
 		System.out.println(String.format("Saving highscore\n%s", text));
-		
-		
 	}
 	
 	/**
@@ -61,12 +61,17 @@ public class Save
 	 */
 	synchronized private boolean serializeToFile(Serializable object, String fileName, Context context)
 	{
+		//FIXME: This needs to check whether the file already exists, and then
+		// Make sure to use the correct ObjectOutputStream to ensure, that file isn't
+		// corrupted.
+		
 		// Open Streams
 		try
 		(
 				// Open streams
 				FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, 1024);
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream)
 		)
 		{
 			// Write the object and make sure to flush
@@ -106,5 +111,30 @@ public class Save
 		
 		// Success return true
 		return true;
+	}
+	
+	/**
+	 * This ObjectOutputStream should be used, when appending
+	 * to a Serial file.
+	 */
+	public class AppendObjectOutputStream extends ObjectOutputStream
+	{
+		
+		public AppendObjectOutputStream(OutputStream out) throws IOException
+		{
+			super(out);
+		}
+		
+		/**
+		 * This doesn't write a stream header to make
+		 * sure the file isn't corrupted.
+		 * @throws IOException Handle this
+		 */
+		@Override
+		protected void writeStreamHeader() throws IOException
+		{
+			//TODO: Learn why this is necessary
+			reset();
+		}
 	}
 }
