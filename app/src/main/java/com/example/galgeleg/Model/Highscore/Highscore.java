@@ -1,8 +1,9 @@
 package com.example.galgeleg.Model.Highscore;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Highscore
+public class Highscore implements Serializable
 {
 	//region Fields
 	private int score;
