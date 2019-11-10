@@ -17,6 +17,8 @@ import com.example.galgeleg.Model.Highscore.RecyclerViewAdapter;
 import com.example.galgeleg.Persistent.Loader;
 import com.example.galgeleg.R;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,8 +78,17 @@ public class HighscoreFragment extends Fragment
 		Loader<Highscore> loader = new Loader<>();
 		
 		// Load and sort the list in reverse order
-		List<Highscore> list = loader.loadSerialFile(getContext(), getResources().getString(R.string.saveFile));
-		Collections.sort(list, Collections.<Highscore>reverseOrder());
+		List<Highscore> list = null;
+		try {
+			list = loader.loadSerialFile(getContext(), getResources().getString(R.string.saveFile));
+			Collections.sort(list, Collections.<Highscore>reverseOrder());
+		}
+		catch (FileNotFoundException e)
+		{
+			// Create empty ArrayList to avoid nullPointer
+			System.out.println("No Save File exists");
+			list = new ArrayList<>();
+		}
 		
 		// Return the list
 		return list;
