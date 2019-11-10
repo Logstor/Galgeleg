@@ -3,7 +3,7 @@ package com.example.galgeleg.Model.Highscore;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Highscore implements Serializable
+public class Highscore implements Serializable, Comparable<Highscore>
 {
 	//region Fields
 	private int score;
@@ -31,6 +31,13 @@ public class Highscore implements Serializable
 	public Date getDateTime()
 	{
 		return date;
+	}
+	
+	@Override
+	public int compareTo(Highscore o)
+	{
+		//TODO: Implement this!
+		return 0;
 	}
 	
 	/**

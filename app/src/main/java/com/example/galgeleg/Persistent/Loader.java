@@ -7,6 +7,7 @@ import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class Loader<T>
 		catch (EOFException e)
 		{
 			return list;
+		}
+		catch (StreamCorruptedException e)
+		{
+			e.printStackTrace();
+			System.err.println("ERROR: File corrupted!");
+			return null;
 		}
 		catch (ClassNotFoundException | IOException e)
 		{

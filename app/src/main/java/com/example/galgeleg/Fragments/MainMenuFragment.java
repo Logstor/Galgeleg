@@ -68,7 +68,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == btn_highscores)
 		{
-			Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame, new HighscoreFragment())
+					.addToBackStack(null)
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+					.commit();
 		}
 		else if (v == btn_settings)
 		{
