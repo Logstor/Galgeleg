@@ -3,6 +3,7 @@ package com.example.galgeleg.Persistent;
 import android.content.Context;
 
 import java.io.BufferedInputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,6 +36,10 @@ public class Loader<T>
 				// Update object
 				object = (T) inputStream.readObject();
 			}
+		}
+		catch (EOFException e)
+		{
+			return list;
 		}
 		catch (ClassNotFoundException | IOException e)
 		{
