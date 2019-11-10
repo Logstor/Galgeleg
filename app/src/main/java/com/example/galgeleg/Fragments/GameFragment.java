@@ -1,13 +1,17 @@
 package com.example.galgeleg.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.galgeleg.Logic.Galgelogik;
@@ -110,6 +115,23 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		logic.nulstil();
 	}
 	
+	private void goMainMenu()
+	{
+		if (getFragmentManager() != null)
+		{
+			if (getFragmentManager().getBackStackEntryCount() > 0)
+				getFragmentManager().popBackStack();
+			else
+			{
+				getFragmentManager().beginTransaction()
+						.replace(R.id.frame, new MainMenuFragment())
+						.commit();
+			}
+		}
+		else
+		{ System.err.println("ERROR: getFragmentManager() == null"); }
+	}
+	
 	/**
 	 * Resets all buttons, text and picture.
 	 */
@@ -195,23 +217,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Set all buttons inactive
 		disableButtons();
 		
-		// Save Highscore
-		saveHighscore();
-		
-		// Go back to main menu
-		if (getFragmentManager() != null)
-		{
-			if (getFragmentManager().getBackStackEntryCount() > 0)
-				getFragmentManager().popBackStack();
-			else
-			{
-				getFragmentManager().beginTransaction()
-						.replace(R.id.frame, new MainMenuFragment())
-						.commit();
-			}
-		}
-		else
-		{ System.err.println("ERROR: getFragmentManager() == null"); }
+		// Promt for saving Highscore
+		promptSave();
 	}
 	
 	/**
@@ -323,16 +330,63 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
+	 * This launches a dialog for saving the score,
+	 * and then saves or don't depending on answer.
+	 * This also shifts Fragment.
+	 */
+	private void promptSave()
+	{
+		//TODO: This dissapears when you click outside the box!
+		
+		// Instantiate EditText and edit it
+		final EditText txt = new EditText(getContext());
+		ViewCompat.setBackgroundTintList(txt, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+		
+		// Create the alertbox and all it's contents
+		AlertDialog dialog = new AlertDialog.Builder(getContext())
+				.setTitle(R.string.title_alert)
+				.setView(txt)
+				.setPositiveButton(R.string.save, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// Save the highscore
+						saveHighscore(txt.getText().toString());
+						// Go back to main menu
+						goMainMenu();
+					}
+				})
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						// Feedback the user that it isn't saved
+						Toast.makeText(getContext(), R.string.not_saved, Toast.LENGTH_SHORT).show();
+						// Go back to main menu
+						goMainMenu();
+					}
+				})
+				.create();
+		dialog.show();
+		
+		// Set the button colors
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ColorStateList.valueOf(getResources()
+		.getColor(R.color.colorPrimary)));
+		dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ColorStateList.valueOf(getResources()
+				.getColor(R.color.colorPrimary)));
+		
+	}
+	
+	/**
 	 * Prompt for the name of the player, and save
 	 * the highscore on a different thread.
+	 * @param name Name of the scorer
 	 */
 	@SuppressLint("StaticFieldLeak")
-	private void saveHighscore()
+	private void saveHighscore(final String name)
 	{
-		//FIXME: Fix this to actually prompt for a name
-		// AlertDialog or PromptDialog
-		final String name = "Test";
-		
 		// Save the highscore on different thread
 		new AsyncTask<Context, Void, Boolean>()
 		{

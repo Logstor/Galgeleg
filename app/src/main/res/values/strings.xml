@@ -7,6 +7,10 @@
     <string name="btn_settings">Indstillinger</string>
 
     <string name="title_high">Highscores</string>
+    <string name="title_alert">Save Highscore</string>
+    <string name="save">Save</string>
+    <string name="cancel">Annuller</string>
+    <string name="not_saved">Highscore not saved</string>
 
     <string name="saveFile">scores.dat</string>
     <string name="saveFail">Saving failure</string>
