@@ -61,6 +61,7 @@ public class HighscoreFragment extends Fragment
 		// Set the animator to default
 		recycler.setItemAnimator(new DefaultItemAnimator());
 		
+		
 		//TODO: Set item separator
 		
 		// Set the adapter
