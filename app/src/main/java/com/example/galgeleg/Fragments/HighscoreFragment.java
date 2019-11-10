@@ -17,6 +17,7 @@ import com.example.galgeleg.Model.Highscore.RecyclerViewAdapter;
 import com.example.galgeleg.Persistent.Loader;
 import com.example.galgeleg.R;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HighscoreFragment extends Fragment
@@ -74,9 +75,9 @@ public class HighscoreFragment extends Fragment
 		// Create loader
 		Loader<Highscore> loader = new Loader<>();
 		
-		// Load and sort the list
+		// Load and sort the list in reverse order
 		List<Highscore> list = loader.loadSerialFile(getContext(), getResources().getString(R.string.saveFile));
-		//Collections.sort(list);
+		Collections.sort(list, Collections.<Highscore>reverseOrder());
 		
 		// Return the list
 		return list;

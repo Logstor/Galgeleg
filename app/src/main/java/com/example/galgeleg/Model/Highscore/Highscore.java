@@ -36,7 +36,12 @@ public class Highscore implements Serializable, Comparable<Highscore>
 	@Override
 	public int compareTo(Highscore o)
 	{
-		//TODO: Implement this!
+		// Check which is greater
+		if (this.score > o.getScore())
+			return 666;
+		else if (this.score < o.getScore())
+			return -666;
+		// Hits this if above isn't true
 		return 0;
 	}
 	
