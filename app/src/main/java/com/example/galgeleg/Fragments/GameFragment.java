@@ -330,6 +330,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	private void saveHighscore()
 	{
 		//FIXME: Fix this to actually prompt for a name
+		// AlertDialog or PromptDialog
 		final String name = "Test";
 		
 		// Save the highscore on different thread

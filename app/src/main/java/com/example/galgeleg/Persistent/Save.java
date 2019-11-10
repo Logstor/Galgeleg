@@ -70,6 +70,9 @@ public class Save
 	 */
 	synchronized private boolean serializeToFile(Serializable object, String fileName, Context context)
 	{
+		// Buffer size in bytes
+		final int BUFFER = 512;
+		
 		// This needs to check whether the file already exists, and then
 		// Make sure to use the correct ObjectOutputStream to ensure, that file isn't
 		// corrupted.
@@ -78,7 +81,7 @@ public class Save
 			// Open Streams
 			try (
 					FileOutputStream fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
-					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, 1024);
+					BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER);
 					AppendObjectOutputStream objectOutputStream = new AppendObjectOutputStream(bufferedOutputStream)
 					)
 			{
@@ -127,10 +130,13 @@ public class Save
 	synchronized private boolean writeToFile(final byte[] data, String fileName, Context context)
 	{
 		// Try with resources
-		try (FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_APPEND))
+		try (
+				FileOutputStream fileStream = context.openFileOutput(fileName, Context.MODE_APPEND);
+				BufferedOutputStream outputStream = new BufferedOutputStream(fileStream) )
 		{
 			// Write the bytes
 			outputStream.write(data);
+			outputStream.flush();
 		}
 		catch (IOException e)
 		{
@@ -146,10 +152,10 @@ public class Save
 	 * This ObjectOutputStream should be used, when appending
 	 * to a Serial file.
 	 */
-	public class AppendObjectOutputStream extends ObjectOutputStream
+	private class AppendObjectOutputStream extends ObjectOutputStream
 	{
 		
-		public AppendObjectOutputStream(OutputStream out) throws IOException
+		private AppendObjectOutputStream(OutputStream out) throws IOException
 		{
 			super(out);
 		}
