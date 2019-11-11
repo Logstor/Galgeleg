@@ -349,6 +349,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Create the alertbox and all it's contents
 		AlertDialog dialog = new AlertDialog.Builder(getContext())
 				.setTitle(R.string.title_alert)
+				.setIcon(R.drawable.save_vec)
 				.setView(view)
 				.setCancelable(false)
 				.setPositiveButton(R.string.save, new DialogInterface.OnClickListener()
