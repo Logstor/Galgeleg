@@ -82,6 +82,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			{
 				progressDialog.setTitle("Henter ord fra DR");
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				progressDialog.setIcon(R.drawable.downloadvec);
 				progressDialog.setCancelable(false);
 				progressDialog.show();
 			}
@@ -130,6 +131,8 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			{
 				//TODO: Add check for internet connection is available
 				// Otherwise use hardcoded words
+				
+				//TODO: Implement caching
 			}
 			
 			@Override
