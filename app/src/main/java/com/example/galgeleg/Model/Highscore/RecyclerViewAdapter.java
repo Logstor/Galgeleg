@@ -48,7 +48,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 		String text = String.format("Score: %d", score.getScore());
 		
 		// Set the text
-		holder.txt_view.setText(text);
+		holder.txt_score.setText(text);
+		holder.txt_name.setText(score.getName());
 	}
 	
 	@Override
@@ -59,12 +60,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 	
 	static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		TextView txt_view;
+		TextView txt_score, txt_name;
 		
 		ViewHolder(@NonNull View itemView)
 		{
 			super(itemView);
-			txt_view = itemView.findViewById(R.id.txt_view);
+			txt_score = itemView.findViewById(R.id.txt_score);
+			txt_name = itemView.findViewById(R.id.txt_name);
 		}
 	}
 }
