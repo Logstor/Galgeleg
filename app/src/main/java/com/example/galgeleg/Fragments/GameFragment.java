@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.galgeleg.Logic.Galgelogik;
@@ -336,21 +335,26 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void promptSave()
 	{
-		//TODO: This dissapears when you click outside the box!
+		// Inflate view
+		final View view = LayoutInflater.from(getContext()).inflate(R.layout.alertdialog_save, null);
 		
-		// Instantiate EditText and edit it
-		final EditText txt = new EditText(getContext());
-		ViewCompat.setBackgroundTintList(txt, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+		// Set description
+		TextView textView = view.findViewById(R.id.lossDescription);
+		String desc = getResources().getString(R.string.lossDescription);
+		textView.setText(String.format(desc, logic.getOrdet(), score));
 		
 		// Create the alertbox and all it's contents
 		AlertDialog dialog = new AlertDialog.Builder(getContext())
 				.setTitle(R.string.title_alert)
-				.setView(txt)
+				.setView(view)
+				.setCancelable(false)
 				.setPositiveButton(R.string.save, new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which)
 					{
+						// Get the EditText view
+						EditText txt = view.findViewById(R.id.saveName);
 						// Save the highscore
 						saveHighscore(txt.getText().toString());
 						// Go back to main menu

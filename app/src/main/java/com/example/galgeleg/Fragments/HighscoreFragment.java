@@ -61,7 +61,6 @@ public class HighscoreFragment extends Fragment
 		// Set the animator to default
 		recycler.setItemAnimator(new DefaultItemAnimator());
 		
-		
 		//TODO: Set item separator
 		
 		// Set the adapter
@@ -79,7 +78,7 @@ public class HighscoreFragment extends Fragment
 		Loader<Highscore> loader = new Loader<>();
 		
 		// Load and sort the list in reverse order
-		List<Highscore> list = null;
+		List<Highscore> list;
 		try {
 			list = loader.loadSerialFile(getContext(), getResources().getString(R.string.saveFile));
 			Collections.sort(list, Collections.<Highscore>reverseOrder());
