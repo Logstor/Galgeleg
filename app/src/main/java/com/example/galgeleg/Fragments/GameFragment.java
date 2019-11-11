@@ -114,6 +114,9 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		logic.nulstil();
 	}
 	
+	/**
+	 *
+	 */
 	private void goMainMenu()
 	{
 		if (getFragmentManager() != null)

@@ -82,6 +82,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			{
 				progressDialog.setTitle("Henter ord fra DR");
 				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				progressDialog.setCancelable(false);
 				progressDialog.show();
 			}
 		}
@@ -127,18 +128,23 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			@Override
 			protected void onPreExecute()
 			{
-			
+				//TODO: Add check for internet connection is available
+				// Otherwise use hardcoded words
 			}
 			
 			@Override
 			protected Void doInBackground(Void... voids)
 			{
+				// Cancel if for some reason it's cancelled
+				if (isCancelled())
+					return null;
+				
 				// Load from DR
 				try {
 					Galgelogik.getInstance().hentOrdFraDr();
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.err.println("ERROR: Couldn't load words from web");
+					System.err.println("\nERROR: Couldn't load words from web\n");
 				}
 				return null;
 			}
@@ -159,6 +165,14 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 					startGame();
 				}
 			}
+			
+			@Override
+			protected void onCancelled()
+			{
+				super.onCancelled();
+				//TODO: Implement me!
+			}
+			
 		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 }
