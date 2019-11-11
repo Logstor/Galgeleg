@@ -98,7 +98,8 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
+	 * This method changes the fragment to
+	 * GameFragment.
 	 */
 	private void startGame()
 	{
@@ -110,7 +111,8 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 *
+	 * This method changes the fragment to
+	 * HighscoreFragment.
 	 */
 	private void startHighscores()
 	{
