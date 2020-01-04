@@ -48,6 +48,9 @@
         <item>x</item>
         <item>y</item>
         <item>z</item>
+        <item>æ</item>
+        <item>ø</item>
+        <item>å</item>
     </string-array>
     <integer name="btnPerRow">8</integer>
 </resources>
