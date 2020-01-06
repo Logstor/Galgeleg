@@ -1,4 +1,4 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.Fragments.MainMenu;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.galgeleg.Fragments.GameFragment;
+import com.example.galgeleg.Fragments.HighscoreFragment;
 import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
 

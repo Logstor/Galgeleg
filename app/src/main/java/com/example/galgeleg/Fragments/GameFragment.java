@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.galgeleg.Fragments.MainMenu.MainMenuFragment;
 import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.Model.Highscore.Highscore;
 import com.example.galgeleg.Persistent.Save;
