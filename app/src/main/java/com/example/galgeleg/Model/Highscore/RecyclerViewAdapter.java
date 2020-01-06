@@ -34,7 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
-		View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
+		View view = inflater.inflate(R.layout.highscore_recyclerview_row, parent, false);
 		return new ViewHolder(view);
 	}
 	

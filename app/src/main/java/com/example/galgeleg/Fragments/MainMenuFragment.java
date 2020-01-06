@@ -33,7 +33,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_menu, container, false);
+		return inflater.inflate(R.layout.menu_fragment, container, false);
 	}
 	
 	@SuppressLint("StaticFieldLeak")
