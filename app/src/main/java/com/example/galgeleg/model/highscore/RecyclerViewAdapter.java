@@ -1,4 +1,4 @@
-package com.example.galgeleg.Model.Highscore;
+package com.example.galgeleg.model.highscore;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

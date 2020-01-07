@@ -1,4 +1,4 @@
-package com.example.galgeleg.Persistent;
+package com.example.galgeleg.persistent;
 
 import android.content.Context;
 

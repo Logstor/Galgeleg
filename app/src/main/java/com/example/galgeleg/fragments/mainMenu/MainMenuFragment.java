@@ -1,4 +1,4 @@
-package com.example.galgeleg.Fragments.MainMenu;
+package com.example.galgeleg.fragments.mainMenu;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -16,11 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.galgeleg.Fragments.GameFragment;
-import com.example.galgeleg.Fragments.HighscoreFragment;
-import com.example.galgeleg.Fragments.Settings.SettingsFragment;
-import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
+import com.example.galgeleg.fragments.GameFragment;
+import com.example.galgeleg.fragments.HighscoreFragment;
+import com.example.galgeleg.fragments.settings.SettingsFragment;
+import com.example.galgeleg.logic.Galgelogik;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener
 {

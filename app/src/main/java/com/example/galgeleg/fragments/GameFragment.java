@@ -1,4 +1,4 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -22,11 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.galgeleg.Fragments.MainMenu.MainMenuFragment;
-import com.example.galgeleg.Logic.Galgelogik;
-import com.example.galgeleg.Model.Highscore.Highscore;
-import com.example.galgeleg.Persistent.Save;
 import com.example.galgeleg.R;
+import com.example.galgeleg.fragments.mainMenu.MainMenuFragment;
+import com.example.galgeleg.logic.Galgelogik;
+import com.example.galgeleg.model.highscore.Highscore;
+import com.example.galgeleg.persistent.Save;
 
 import java.util.ArrayList;
 import java.util.Calendar;

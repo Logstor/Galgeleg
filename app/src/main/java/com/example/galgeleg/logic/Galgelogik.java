@@ -1,4 +1,4 @@
-package com.example.galgeleg.Logic;
+package com.example.galgeleg.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;

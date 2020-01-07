@@ -1,4 +1,4 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.galgeleg.Model.Highscore.Highscore;
-import com.example.galgeleg.Model.Highscore.RecyclerViewAdapter;
-import com.example.galgeleg.Persistent.Loader;
 import com.example.galgeleg.R;
+import com.example.galgeleg.model.highscore.Highscore;
+import com.example.galgeleg.model.highscore.RecyclerViewAdapter;
+import com.example.galgeleg.persistent.Loader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

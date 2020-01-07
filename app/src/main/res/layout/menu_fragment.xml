@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.galgeleg.Fragments.MainMenu.MainMenuFragment">
+    tools:context="com.example.galgeleg.fragments.mainMenu.MainMenuFragment">
 
     <TextView
         android:id="@+id/title"
