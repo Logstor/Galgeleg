@@ -26,6 +26,7 @@ import com.example.galgeleg.R;
 import com.example.galgeleg.fragments.mainMenu.MainMenuFragment;
 import com.example.galgeleg.logic.Galgelogik;
 import com.example.galgeleg.model.highscore.Highscore;
+import com.example.galgeleg.model.settings.Settings;
 import com.example.galgeleg.persistent.Save;
 
 import java.util.ArrayList;
@@ -37,11 +38,12 @@ public class GameFragment extends Fragment implements View.OnClickListener
 {
 	private View view;
 	private ImageView image;
-	private TextView txt_view, txt_score;
+	private TextView txt_view, txt_score, txt_cheat;
 	private List<Button> buttons;
 	private int score = 0;
 	
-	private Galgelogik logic = Galgelogik.getInstance();
+	private Galgelogik logic 	= Galgelogik.getInstance();
+	private Settings settings 	= Settings.getInstance();
 	
 	@Nullable
 	@Override
@@ -73,6 +75,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		image		= view.findViewById(R.id.galge);
 		txt_view 	= view.findViewById(R.id.txt_word);
 		txt_score	= view.findViewById(R.id.txt_score);
+		txt_cheat	= view.findViewById(R.id.txt_cheat);
 		
 		// Set game up
 		resetGame();
@@ -142,8 +145,14 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	{
 		// Reset Image
 		image.setImageResource(R.drawable.galgevec);
+		
 		// Reset text
 		txt_view.setText(logic.getSynligtOrd());
+		
+		// Update cheat
+		if (settings.isCheatEnabled())
+			txt_cheat.setText(logic.getOrdet());
+		
 		// Reset buttons
 		if (buttons != null)
 		{

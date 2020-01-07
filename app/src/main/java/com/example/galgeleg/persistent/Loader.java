@@ -64,13 +64,13 @@ public class Loader<T>
 		{
 			e.printStackTrace();
 			System.err.println("ERROR: File corrupted!");
-			return null;
+			return list;
 		}
 		// All other IO exceptions
 		catch (ClassNotFoundException | IOException e)
 		{
 			e.printStackTrace();
-			return null;
+			return list;
 		}
 		
 		// Upon success
