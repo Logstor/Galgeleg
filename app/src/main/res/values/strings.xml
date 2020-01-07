@@ -8,6 +8,7 @@
 
     <!-- Settings -->
     <string name="title_settings">Indstillinger</string>
+    <string name="cheats">Cheats</string>
 
     <string name="title_high">Highscores</string>
     <string name="title_alert">Save Highscore</string>
