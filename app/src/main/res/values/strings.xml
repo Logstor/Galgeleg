@@ -6,11 +6,14 @@
     <string name="btn_highscores">Highscores</string>
     <string name="btn_settings">Indstillinger</string>
 
+    <!-- Highscores -->
+    <string name="title_high">Highscores</string>
+    <string name="empty_list">No highscores achieved yet!</string>
+
     <!-- Settings -->
     <string name="title_settings">Indstillinger</string>
     <string name="cheats">Cheats</string>
 
-    <string name="title_high">Highscores</string>
     <string name="title_alert">Save Highscore</string>
     <string name="lossDescription">Du tabte!\nOrdet var \"%s\", og din score blev %d.\nVil du gemme din score?</string>
     <string name="editText_hint">Navn</string>
