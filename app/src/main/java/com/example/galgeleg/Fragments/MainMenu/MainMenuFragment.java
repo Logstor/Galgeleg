@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.galgeleg.Fragments.GameFragment;
 import com.example.galgeleg.Fragments.HighscoreFragment;
+import com.example.galgeleg.Fragments.Settings.SettingsFragment;
 import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
 
@@ -95,12 +95,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == btn_settings)
 		{
-			Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
+			startSettings();
 		}
 	}
 	
 	/**
-	 * This method changes the fragment to
+	 * This method changes the fragment to the
 	 * GameFragment.
 	 */
 	private void startGame()
@@ -113,13 +113,26 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 * This method changes the fragment to
+	 * This method changes the fragment to the
 	 * HighscoreFragment.
 	 */
 	private void startHighscores()
 	{
 		fragmentManager.beginTransaction()
 				.replace(R.id.frame, new HighscoreFragment())
+				.addToBackStack(null)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.commit();
+	}
+	
+	/**
+	 * This method changes the fragment to the
+	 * SettingsFragment.
+	 */
+	private void startSettings()
+	{
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame, new SettingsFragment())
 				.addToBackStack(null)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.commit();
