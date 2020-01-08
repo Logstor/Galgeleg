@@ -291,8 +291,6 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	private void gameLost()
 	{
 		// Play sound
-		if (mediaLoss.isPlaying())
-			mediaLoss.stop();
 		mediaLoss.start();
 		
 		// Set score text
@@ -311,8 +309,6 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	private void gameWon()
 	{
 		// Play sound
-		if (mediaWin.isPlaying())
-			mediaWin.stop();
 		mediaWin.start();
 		
 		// Update score text

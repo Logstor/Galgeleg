@@ -28,20 +28,31 @@ public class MainMenuButton extends AppCompatButton
 	//endregion
 	
 	@Override
+	public boolean performClick()
+	{ return super.performClick(); }
+	
+	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
+		/*
+		 * Animating the alpha value. It performs the click, when the user
+		 * lifts the finger.
+		 */
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 			animate()
-					.alpha(0.5f)
-					.setDuration(100)
+					.alpha(0.2f)
+					.setDuration(50)
 					.start();
 		
 		else if (event.getAction() == MotionEvent.ACTION_UP)
+		{
 			animate()
 					.alpha(1f)
-					.setDuration(100)
+					.setDuration(50)
 					.start();
-			
-		return super.onTouchEvent(event);
+			performClick();
+		}
+		
+		return true;
 	}
 }
