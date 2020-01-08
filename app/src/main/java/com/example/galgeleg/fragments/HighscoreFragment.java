@@ -64,7 +64,6 @@ public class HighscoreFragment extends Fragment
 		
 		else
 		{
-			
 			// Create the Adapter
 			rAdapter = new RecyclerViewAdapter(getContext(), highscores);
 			

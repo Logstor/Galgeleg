@@ -69,7 +69,10 @@ public class Loader<T>
 		// All other IO exceptions
 		catch (ClassNotFoundException | IOException e)
 		{
+			//TODO: This is thrown when it cannot recognize the file format. This should be handled
+			// 		somehow.
 			e.printStackTrace();
+			System.out.println(String.format("\nClassNotFoundException: %s\n%s\n", e.getMessage(), e.getCause()));
 			return list;
 		}
 		
