@@ -8,6 +8,9 @@ import androidx.appcompat.widget.AppCompatButton;
 
 public class MainMenuButton extends AppCompatButton
 {
+	private final int animateTime 	= 75;
+	private final float alpha 		= 0.3f;
+	
 	//region Constructors
 	
 	public MainMenuButton(Context context)
@@ -40,15 +43,15 @@ public class MainMenuButton extends AppCompatButton
 		 */
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 			animate()
-					.alpha(0.2f)
-					.setDuration(50)
+					.alpha(alpha)
+					.setDuration(animateTime)
 					.start();
 		
 		else if (event.getAction() == MotionEvent.ACTION_UP)
 		{
 			animate()
 					.alpha(1f)
-					.setDuration(50)
+					.setDuration(animateTime)
 					.start();
 			performClick();
 		}
