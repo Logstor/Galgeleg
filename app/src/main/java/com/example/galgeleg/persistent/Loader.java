@@ -1,4 +1,4 @@
-package com.example.galgeleg.Persistent;
+package com.example.galgeleg.persistent;
 
 import android.content.Context;
 
@@ -64,13 +64,16 @@ public class Loader<T>
 		{
 			e.printStackTrace();
 			System.err.println("ERROR: File corrupted!");
-			return null;
+			return list;
 		}
 		// All other IO exceptions
 		catch (ClassNotFoundException | IOException e)
 		{
+			//TODO: This is thrown when it cannot recognize the file format. This should be handled
+			// 		somehow.
 			e.printStackTrace();
-			return null;
+			System.out.println(String.format("\nClassNotFoundException: %s\n%s\n", e.getMessage(), e.getCause()));
+			return list;
 		}
 		
 		// Upon success

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.galgeleg.Fragments.MainMenuFragment;
+import com.example.galgeleg.fragments.mainMenu.MainMenuFragment;
 
 public class MainActivity extends FragmentActivity
 {

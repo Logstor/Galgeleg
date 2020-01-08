@@ -1,10 +1,10 @@
-package com.example.galgeleg.Persistent;
+package com.example.galgeleg.persistent;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.example.galgeleg.Model.Highscore.Highscore;
 import com.example.galgeleg.R;
+import com.example.galgeleg.model.highscore.Highscore;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

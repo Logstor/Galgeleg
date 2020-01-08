@@ -1,4 +1,4 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.fragments.mainMenu;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.galgeleg.Logic.Galgelogik;
 import com.example.galgeleg.R;
+import com.example.galgeleg.fragments.GameFragment;
+import com.example.galgeleg.fragments.HighscoreFragment;
+import com.example.galgeleg.fragments.settings.SettingsFragment;
+import com.example.galgeleg.logic.Galgelogik;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener
 {
@@ -33,7 +35,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_menu, container, false);
+		return inflater.inflate(R.layout.menu_fragment, container, false);
 	}
 	
 	@SuppressLint("StaticFieldLeak")
@@ -93,12 +95,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		}
 		else if (v == btn_settings)
 		{
-			Toast.makeText(getContext(), "Not Implemented", Toast.LENGTH_SHORT).show();
+			startSettings();
 		}
 	}
 	
 	/**
-	 * This method changes the fragment to
+	 * This method changes the fragment to the
 	 * GameFragment.
 	 */
 	private void startGame()
@@ -111,13 +113,26 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
-	 * This method changes the fragment to
+	 * This method changes the fragment to the
 	 * HighscoreFragment.
 	 */
 	private void startHighscores()
 	{
 		fragmentManager.beginTransaction()
 				.replace(R.id.frame, new HighscoreFragment())
+				.addToBackStack(null)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.commit();
+	}
+	
+	/**
+	 * This method changes the fragment to the
+	 * SettingsFragment.
+	 */
+	private void startSettings()
+	{
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame, new SettingsFragment())
 				.addToBackStack(null)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.commit();

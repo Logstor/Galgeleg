@@ -1,9 +1,10 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,10 +14,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.galgeleg.Model.Highscore.Highscore;
-import com.example.galgeleg.Model.Highscore.RecyclerViewAdapter;
-import com.example.galgeleg.Persistent.Loader;
 import com.example.galgeleg.R;
+import com.example.galgeleg.model.highscore.Highscore;
+import com.example.galgeleg.model.highscore.RecyclerViewAdapter;
+import com.example.galgeleg.persistent.Loader;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class HighscoreFragment extends Fragment
 {
-	private String txt_title;
+	private TextView txt_title, txt_empty;
 	private RecyclerView recycler;
 	private RecyclerViewAdapter rAdapter;
 	
@@ -33,7 +34,7 @@ public class HighscoreFragment extends Fragment
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.fragment_highscore, container, false);
+		return inflater.inflate(R.layout.highscore_fragment, container, false);
 	}
 	
 	@Override
@@ -42,6 +43,7 @@ public class HighscoreFragment extends Fragment
 		super.onViewCreated(view, savedInstanceState);
 		
 		// Get elements
+		txt_empty = view.findViewById(R.id.txt_empty);
 		recycler = view.findViewById(R.id.recycler);
 		
 		// Setup the recycler
@@ -53,22 +55,32 @@ public class HighscoreFragment extends Fragment
 	 */
 	private void setupRecycler()
 	{
-		// Create the Adapter
-		rAdapter = new RecyclerViewAdapter(getContext(), loadHighscores());
+		// Load list
+		List<Highscore> highscores = loadHighscores();
 		
-		// Set the LayoutManager to linear
-		recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+		// Check whether there's any highscores yet
+		if (highscores.isEmpty())
+			txt_empty.setVisibility(View.VISIBLE);
 		
-		// Set the animator to default
-		recycler.setItemAnimator(new DefaultItemAnimator());
-		
-		// Set item separator
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(),
-				DividerItemDecoration.VERTICAL);
-		recycler.addItemDecoration(dividerItemDecoration);
-		
-		// Set the adapter
-		recycler.setAdapter(rAdapter);
+		else
+		{
+			// Create the Adapter
+			rAdapter = new RecyclerViewAdapter(getContext(), highscores);
+			
+			// Set the LayoutManager to linear
+			recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+			
+			// Set the animator to default
+			recycler.setItemAnimator(new DefaultItemAnimator());
+			
+			// Set item separator
+			DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recycler.getContext(),
+					DividerItemDecoration.VERTICAL);
+			recycler.addItemDecoration(dividerItemDecoration);
+			
+			// Set the adapter
+			recycler.setAdapter(rAdapter);
+		}
 	}
 	
 	/**

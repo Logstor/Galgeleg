@@ -1,11 +1,14 @@
-package com.example.galgeleg.Fragments;
+package com.example.galgeleg.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +25,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.galgeleg.Logic.Galgelogik;
-import com.example.galgeleg.Model.Highscore.Highscore;
-import com.example.galgeleg.Persistent.Save;
 import com.example.galgeleg.R;
+import com.example.galgeleg.fragments.mainMenu.MainMenuFragment;
+import com.example.galgeleg.logic.Galgelogik;
+import com.example.galgeleg.model.highscore.Highscore;
+import com.example.galgeleg.model.settings.Settings;
+import com.example.galgeleg.persistent.Save;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,17 +42,21 @@ public class GameFragment extends Fragment implements View.OnClickListener
 {
 	private View view;
 	private ImageView image;
-	private TextView txt_view, txt_score;
+	private TextView txt_view, txt_score, txt_cheat;
 	private List<Button> buttons;
 	private int score = 0;
 	
-	private Galgelogik logic = Galgelogik.getInstance();
+	private MediaPlayer mediaWin;
+	private MediaPlayer mediaLoss;
+	
+	private Galgelogik logic 		= Galgelogik.getInstance();
+	private Settings settings 		= Settings.getInstance();
 	
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		return view = inflater.inflate(R.layout.fragment_game, container, false);
+		return view = inflater.inflate(R.layout.game_fragment, container, false);
 	}
 	
 	@Override
@@ -54,6 +64,18 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	{
 		super.onViewCreated(view, savedInstanceState);
 		setup();
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		
+		// Sound
+		mediaWin.release();
+		mediaLoss.release();
+		mediaWin = null;
+		mediaLoss = null;
 	}
 	
 	@Override
@@ -68,15 +90,64 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void setup()
 	{
+		// Prepare sounds
+		setupMediaPlayers();
+		
 		// Find element references
 		image		= view.findViewById(R.id.galge);
 		txt_view 	= view.findViewById(R.id.txt_word);
 		txt_score	= view.findViewById(R.id.txt_score);
+		txt_cheat	= view.findViewById(R.id.txt_cheat);
 		
 		// Set game up
 		resetGame();
 		resetLayout();
 		updateScore();
+	}
+	
+	/**
+	 * This Creates and prepares the two sound for winning and losing.
+	 * It uses the MediaPlayers Asynchronous prepare method to avoid
+	 * blocking the UI thread.
+	 */
+	private void setupMediaPlayers()
+	{
+		// Settings for the MediaPlayers
+		AudioAttributes attributes = new AudioAttributes.Builder()
+				.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+				.setUsage(AudioAttributes.USAGE_GAME)
+				.build();
+		
+		// Create
+		try {
+			mediaWin 	= new MediaPlayer();
+			mediaLoss 	= new MediaPlayer();
+			
+			mediaWin.setAudioAttributes(attributes);
+			mediaLoss.setAudioAttributes(attributes);
+			
+			// Use correct method depending on Android version
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+			{
+				mediaWin.setDataSource(getResources().openRawResourceFd(R.raw.win_sound));
+				mediaLoss.setDataSource(getResources().openRawResourceFd(R.raw.loss_sound));
+			}
+			
+			else
+			{
+				mediaWin.setDataSource(getResources().openRawResourceFd(R.raw.win_sound).getFileDescriptor());
+				mediaLoss.setDataSource(getResources().openRawResourceFd(R.raw.loss_sound).getFileDescriptor());
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("ERROR: Couldn't load sounds");
+		}
+		
+		
+		// Asynchronously prepare
+		mediaWin.prepareAsync();
+		mediaLoss.prepareAsync();
 	}
 	
 	/**
@@ -141,8 +212,14 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	{
 		// Reset Image
 		image.setImageResource(R.drawable.galgevec);
+		
 		// Reset text
 		txt_view.setText(logic.getSynligtOrd());
+		
+		// Update cheat
+		if (settings.isCheatEnabled())
+			txt_cheat.setText(logic.getOrdet());
+		
 		// Reset buttons
 		if (buttons != null)
 		{
@@ -213,6 +290,9 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void gameLost()
 	{
+		// Play sound
+		mediaLoss.start();
+		
 		// Set score text
 		txt_score.setText(getResources().getString(R.string.tabt));
 		
@@ -228,6 +308,9 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 */
 	private void gameWon()
 	{
+		// Play sound
+		mediaWin.start();
+		
 		// Update score text
 		txt_score.setText(getResources().getString(R.string.sejr));
 		

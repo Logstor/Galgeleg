@@ -1,4 +1,4 @@
-package com.example.galgeleg.Model.Highscore;
+package com.example.galgeleg.model.highscore;
 
 import java.io.Serializable;
 import java.util.Date;
