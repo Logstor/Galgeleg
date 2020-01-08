@@ -46,10 +46,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		fragmentManager = getFragmentManager();
 		
 		setup(view);
-		
-		if (!wordsLoaded)
-			getWordsOnline();
-		
 	}
 	
 	/**
@@ -78,16 +74,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	{
 		if (v == btn_newGame)
 		{
-			if (wordsLoaded)
-				startGame();
-			else
-			{
-				progressDialog.setTitle("Henter ord fra DR");
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				progressDialog.setIcon(R.drawable.downloadvec);
-				progressDialog.setCancelable(false);
-				progressDialog.show();
-			}
+			startGame();
 		}
 		else if (v == btn_highscores)
 		{
@@ -103,44 +90,17 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	 * This method changes the fragment to the
 	 * GameFragment.
 	 */
+	@SuppressLint("StaticFieldLeak")
 	private void startGame()
 	{
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame, new GameFragment())
-				.addToBackStack(null)
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.commit();
-	}
-	
-	/**
-	 * This method changes the fragment to the
-	 * HighscoreFragment.
-	 */
-	private void startHighscores()
-	{
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame, new HighscoreFragment())
-				.addToBackStack(null)
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.commit();
-	}
-	
-	/**
-	 * This method changes the fragment to the
-	 * SettingsFragment.
-	 */
-	private void startSettings()
-	{
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame, new SettingsFragment())
-				.addToBackStack(null)
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.commit();
-	}
-	
-	@SuppressLint("StaticFieldLeak")
-	private void getWordsOnline()
-	{
+		// Start progress dialog
+		progressDialog.setTitle("Henter ord fra DR");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIcon(R.drawable.downloadvec);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		
+		// Start loading asynchronously
 		new AsyncTask<Void, Void, Void>() {
 			
 			@Override
@@ -172,18 +132,16 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			@Override
 			protected void onPostExecute(Void aVoid)
 			{
-				// Set load boolean true
-				wordsLoaded = true;
-				
-				// Check if it needs to change fragment
+				// Remove dialog first
 				if (progressDialog.isShowing())
-				{
-					// Remove dialog
 					progressDialog.dismiss();
-					
-					// Change fragment
-					startGame();
-				}
+				
+				// Change fragment
+				fragmentManager.beginTransaction()
+						.replace(R.id.frame, new GameFragment())
+						.addToBackStack(null)
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+						.commit();
 			}
 			
 			@Override
@@ -194,5 +152,32 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			}
 			
 		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		
+	}
+	
+	/**
+	 * This method changes the fragment to the
+	 * HighscoreFragment.
+	 */
+	private void startHighscores()
+	{
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame, new HighscoreFragment())
+				.addToBackStack(null)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.commit();
+	}
+	
+	/**
+	 * This method changes the fragment to the
+	 * SettingsFragment.
+	 */
+	private void startSettings()
+	{
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame, new SettingsFragment())
+				.addToBackStack(null)
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+				.commit();
 	}
 }

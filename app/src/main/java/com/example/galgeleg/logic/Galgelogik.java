@@ -49,6 +49,8 @@ public class Galgelogik
   public ArrayList<String> getBrugteBogstaver() {
     return brugteBogstaver;
   }
+  
+  public int getAntalMuligeOrd() { return muligeOrd.size(); }
 
   public String getSynligtOrd() {
     return synligtOrd;
@@ -78,7 +80,6 @@ public class Galgelogik
     return spilletErTabt || spilletErVundet;
   }
 
-
   public void nulstil() {
     brugteBogstaver.clear();
     antalForkerteBogstaver = 0;
@@ -87,7 +88,6 @@ public class Galgelogik
     ordet = muligeOrd.get(new Random().nextInt(muligeOrd.size()));
     opdaterSynligtOrd();
   }
-
 
   private void opdaterSynligtOrd()
   {
@@ -140,7 +140,6 @@ public class Galgelogik
     System.out.println("---------- ");
   }
 
-
   public static String hentUrl(String url) throws IOException {
     System.out.println("Henter data fra " + url);
     BufferedReader br = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
@@ -152,7 +151,6 @@ public class Galgelogik
     }
     return sb.toString();
   }
-
 
   /**
    * Hent ord fra DRs forside (https://dr.dk)
@@ -182,14 +180,12 @@ public class Galgelogik
     nulstil();
   }
 
-
   /**
    * Hent ord og sværhedsgrad fra et online regneark. Du kan redigere i regnearket, på adressen
    * https://docs.google.com/spreadsheets/d/1RnwU9KATJB94Rhr7nurvjxfg09wAHMZPYB3uySBPO6M/edit?usp=sharing
    * @param sværhedsgrader en streng med de tilladte sværhedsgrader - f.eks "3" for at medtage kun svære ord, eller "12" for alle nemme og halvsvære ord
    * @throws Exception Exception
    */
-
   public void hentOrdFraRegneark(String sværhedsgrader) throws Exception {
     String id = "1RnwU9KATJB94Rhr7nurvjxfg09wAHMZPYB3uySBPO6M";
 
