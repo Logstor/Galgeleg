@@ -27,7 +27,6 @@ public class MainMenuButton extends AppCompatButton
 	
 	//endregion
 	
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
