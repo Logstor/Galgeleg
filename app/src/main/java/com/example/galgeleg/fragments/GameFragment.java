@@ -509,11 +509,18 @@ public class GameFragment extends Fragment implements View.OnClickListener
 					public void onClick(DialogInterface dialog, int which)
 					{
 						// Get the EditText view
-						EditText txt = view.findViewById(R.id.saveName);
-						// Save the highscore
-						saveHighscore(txt.getText().toString());
-						// Go back to main menu
-						goMainMenu();
+						EditText viewById 	= view.findViewById(R.id.saveName);
+						String txt 			= viewById.getText().toString();
+						
+						//Check if name is entered
+						if (txt.isEmpty() || txt.equals(" "))
+							Toast.makeText(getContext(), "No name", Toast.LENGTH_LONG).show();
+						else {
+							// Save the highscore
+							saveHighscore(txt);
+							// Go back to main menu
+							goMainMenu();
+						}
 					}
 				})
 				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
