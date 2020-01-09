@@ -47,6 +47,18 @@
             android:layout_height="30dp" />
 
         <Button
+            android:id="@+id/btn_faceOff"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_faceOff"
+            android:textSize="38sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Button
             android:id="@+id/btn_highscores"
             android:layout_width="340dp"
             android:layout_height="wrap_content"

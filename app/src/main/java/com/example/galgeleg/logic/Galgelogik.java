@@ -14,7 +14,7 @@ public class Galgelogik
   private static Galgelogik instance;
   
   /** AHT afprøvning er muligeOrd synlig på pakkeniveau */
-  ArrayList<String> muligeOrd = new ArrayList<String>();
+  public ArrayList<String> muligeOrd = new ArrayList<String>();
   private String ordet;
   private ArrayList<String> brugteBogstaver = new ArrayList<String>();
   private String synligtOrd;
