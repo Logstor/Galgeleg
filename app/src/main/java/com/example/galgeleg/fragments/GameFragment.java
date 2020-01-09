@@ -212,7 +212,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Animate
 		img_wrong.animate()
 				.setDuration(500)
-				.translationY(-300)
+				.translationYBy(900)
+				.translationXBy(400)
 				.start();
 	}
 	
