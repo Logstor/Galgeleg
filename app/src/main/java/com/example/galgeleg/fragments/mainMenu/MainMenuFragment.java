@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.galgeleg.R;
 import com.example.galgeleg.fragments.GameFragment;
 import com.example.galgeleg.fragments.HighscoreFragment;
+import com.example.galgeleg.fragments.faceOff.LoaderFragment;
 import com.example.galgeleg.fragments.settings.SettingsFragment;
 import com.example.galgeleg.logic.Galgelogik;
 
@@ -29,7 +30,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 {
 	private static boolean wordsLoaded = false;
 	
-	private Button btn_newGame, btn_highscores, btn_settings;
+	private Button btn_newGame, btn_faceOff, btn_highscores, btn_settings;
 	private ProgressDialog progressDialog;
 	private TextView txt_title;
 	private FragmentManager fragmentManager;
@@ -59,12 +60,14 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	{
 		// Get elements
 		btn_newGame 	= view.findViewById(R.id.btn_newGame);
+		btn_faceOff		= view.findViewById(R.id.btn_faceOff);
 		btn_highscores	= view.findViewById(R.id.btn_highscores);
 		btn_settings	= view.findViewById(R.id.btn_settings);
 		txt_title		= view.findViewById(R.id.title);
 		
 		// Set onClick listeners
 		btn_newGame.setOnClickListener(this);
+		btn_faceOff.setOnClickListener(this);
 		btn_highscores.setOnClickListener(this);
 		btn_settings.setOnClickListener(this);
 		
@@ -76,17 +79,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	public void onClick(View v)
 	{
 		if (v == btn_newGame)
-		{
-			startGame();
-		}
+			startGame(false);
+		else if (v == btn_faceOff)
+			startFaceOff();
 		else if (v == btn_highscores)
-		{
 			startHighscores();
-		}
 		else if (v == btn_settings)
-		{
 			startSettings();
-		}
 	}
 	
 	/**
@@ -115,9 +114,10 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	/**
 	 * This method changes the fragment to the
 	 * GameFragment.
+	 * @param faceOff true if it's faceOff mode
 	 */
 	@SuppressLint("StaticFieldLeak")
-	private void startGame()
+	private void startGame(final boolean faceOff)
 	{
 		// Start progress dialog
 		progressDialog.setTitle("Henter ord fra DR");
@@ -161,12 +161,20 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 				if (progressDialog.isShowing())
 					progressDialog.dismiss();
 				
-				// Change fragment
-				fragmentManager.beginTransaction()
-						.replace(R.id.frame, new GameFragment())
-						.addToBackStack(null)
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-						.commit();
+				// Change fragment depending on which button was clicked
+				if (faceOff)
+					fragmentManager.beginTransaction()
+					.replace(R.id.frame, new LoaderFragment(Galgelogik.getInstance().muligeOrd))
+					.addToBackStack(null)
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+					.commit();
+				else {
+					fragmentManager.beginTransaction()
+							.replace(R.id.frame, new GameFragment())
+							.addToBackStack(null)
+							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+							.commit();
+				}
 			}
 			
 			@Override
@@ -177,6 +185,11 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			
 		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		
+	}
+	
+	private void startFaceOff()
+	{
+		startGame(true);
 	}
 	
 	/**

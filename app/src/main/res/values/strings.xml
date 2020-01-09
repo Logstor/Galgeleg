@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">s160107 - GalgeLeg</string>
+    <string name="not_implemented">Not Implemented</string>
 
+    <!-- Main Menu -->
     <string name="title">Galgeleg</string>
     <string name="btn_newGame">Nyt Spil</string>
+    <string name="btn_faceOff">Face Off</string>
     <string name="btn_highscores">Highscores</string>
     <string name="btn_settings">Indstillinger</string>
 
