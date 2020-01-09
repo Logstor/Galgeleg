@@ -2,6 +2,9 @@ package com.example.galgeleg.fragments.mainMenu;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,10 +49,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 		fragmentManager = getFragmentManager();
 		
 		setup(view);
-		
-		if (!wordsLoaded)
-			getWordsOnline();
-		
 	}
 	
 	/**
@@ -78,16 +77,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	{
 		if (v == btn_newGame)
 		{
-			if (wordsLoaded)
-				startGame();
-			else
-			{
-				progressDialog.setTitle("Henter ord fra DR");
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				progressDialog.setIcon(R.drawable.downloadvec);
-				progressDialog.setCancelable(false);
-				progressDialog.show();
-			}
+			startGame();
 		}
 		else if (v == btn_highscores)
 		{
@@ -100,16 +90,93 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
+	 * Finds out whether there's a network connection or not.
+	 * @return true or false
+	 */
+	private boolean isNetworkAvailable() {
+		getContext();
+		
+		try {
+			ConnectivityManager connectivityManager =
+					(ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+			
+			return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+		}
+		catch (NullPointerException e)
+		{
+			System.err.println("WARNING: No network connection!");
+			return false;
+		}
+		
+	}
+	
+	/**
 	 * This method changes the fragment to the
 	 * GameFragment.
 	 */
+	@SuppressLint("StaticFieldLeak")
 	private void startGame()
 	{
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame, new GameFragment())
-				.addToBackStack(null)
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.commit();
+		// Start progress dialog
+		progressDialog.setTitle("Henter ord fra DR");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDialog.setIcon(R.drawable.downloadvec);
+		progressDialog.setCancelable(false);
+		progressDialog.show();
+		
+		// Start loading asynchronously
+		new AsyncTask<Void, Void, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				// Checking network connectivity
+				if (!isNetworkAvailable())
+					cancel(false);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... voids)
+			{
+				// Cancel if for some reason it's cancelled
+				if (isCancelled())
+					return null;
+				
+				// Load from DR
+				try {
+					Galgelogik.getInstance().hentOrdFraDr();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.err.println("\nERROR: Couldn't load words from web\n");
+				}
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void aVoid)
+			{
+				// Remove dialog first
+				if (progressDialog.isShowing())
+					progressDialog.dismiss();
+				
+				// Change fragment
+				fragmentManager.beginTransaction()
+						.replace(R.id.frame, new GameFragment())
+						.addToBackStack(null)
+						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+						.commit();
+			}
+			
+			@Override
+			protected void onCancelled()
+			{
+				super.onCancelled();
+			}
+			
+		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		
 	}
 	
 	/**
@@ -136,63 +203,5 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 				.addToBackStack(null)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 				.commit();
-	}
-	
-	@SuppressLint("StaticFieldLeak")
-	private void getWordsOnline()
-	{
-		new AsyncTask<Void, Void, Void>() {
-			
-			@Override
-			protected void onPreExecute()
-			{
-				//TODO: Add check for internet connection is available
-				// Otherwise use hardcoded words
-				
-				//TODO: Implement caching
-			}
-			
-			@Override
-			protected Void doInBackground(Void... voids)
-			{
-				// Cancel if for some reason it's cancelled
-				if (isCancelled())
-					return null;
-				
-				// Load from DR
-				try {
-					Galgelogik.getInstance().hentOrdFraDr();
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.err.println("\nERROR: Couldn't load words from web\n");
-				}
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void aVoid)
-			{
-				// Set load boolean true
-				wordsLoaded = true;
-				
-				// Check if it needs to change fragment
-				if (progressDialog.isShowing())
-				{
-					// Remove dialog
-					progressDialog.dismiss();
-					
-					// Change fragment
-					startGame();
-				}
-			}
-			
-			@Override
-			protected void onCancelled()
-			{
-				super.onCancelled();
-				//TODO: Implement me!
-			}
-			
-		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 }

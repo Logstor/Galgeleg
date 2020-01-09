@@ -41,7 +41,7 @@ import java.util.List;
 public class GameFragment extends Fragment implements View.OnClickListener
 {
 	private View view;
-	private ImageView image;
+	private ImageView image, img_correct, img_wrong;
 	private TextView txt_view, txt_score, txt_cheat;
 	private List<Button> buttons;
 	private int score = 0;
@@ -95,6 +95,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		
 		// Find element references
 		image		= view.findViewById(R.id.galge);
+		img_correct = view.findViewById(R.id.image_correct);
+		img_wrong	= view.findViewById(R.id.image_wrong);
 		txt_view 	= view.findViewById(R.id.txt_word);
 		txt_score	= view.findViewById(R.id.txt_score);
 		txt_cheat	= view.findViewById(R.id.txt_cheat);
@@ -102,7 +104,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Set game up
 		resetGame();
 		resetLayout();
-		updateScore();
+		increaseScore();
 	}
 	
 	/**
@@ -157,7 +159,15 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	{
 		// Guess the letter and update score
 		logic.gætBogstav(btn_Clicked.getText().toString());
-		updateScore();
+		boolean correct = logic.erSidsteBogstavKorrekt();
+		
+		if (correct)
+		{
+			increaseScore();
+			animateCorrect(btn_Clicked);
+		}
+		else
+			animateWrong(btn_Clicked);
 		
 		// Textview update
 		txt_view.setText(logic.getSynligtOrd());
@@ -174,6 +184,69 @@ public class GameFragment extends Fragment implements View.OnClickListener
 			// Update image
 			updateImage();
 		}
+	}
+	
+	/**
+	 * Makes the correct guess animation.
+	 * @param btn_Clicked The clicked button
+	 */
+	private void animateCorrect(Button btn_Clicked)
+	{
+		placeImageAtView(btn_Clicked, img_correct);
+		
+		// Animate
+		img_correct.animate()
+				.setDuration(550)
+				.translationY(-200)
+				.alphaBy(-0.8f)
+				.start();
+	}
+	
+	/**
+	 * Makes the wrong guess animation.
+	 * @param btn_Clicked The clicked button
+	 */
+	private void animateWrong(Button btn_Clicked)
+	{
+		placeImageAtView(btn_Clicked, img_wrong);
+		
+		// Animate
+		img_wrong.animate()
+				.setDuration(550)
+				.translationYBy(1100)
+				.alphaBy(-0.8f)
+				.start();
+	}
+	
+	/**
+	 * Places the given ImageView at the given View, and makes the ImageView
+	 * visible.
+	 * @param view View to place the Image at
+	 * @param image Image to place on top of view
+	 */
+	private void placeImageAtView(View view, ImageView image)
+	{
+		// Get the location of the button clicked
+		int[] location = getViewXYLocation(view);
+		
+		// Move picture to button and make visible
+		image.setVisibility(View.VISIBLE);
+		image.setX(location[0]);
+		image.setY(location[1]);
+		image.setAlpha(1f);
+	}
+	
+	/**
+	 * Takes a View component, and gets it's X and Y component. It
+	 * returns an array of two. [X, Y]
+	 * @param view View object to get location from
+	 * @return int array of size 2
+	 */
+	private int[] getViewXYLocation(View view)
+	{
+		int[] location = new int[2];
+		view.getLocationOnScreen(location);
+		return location;
 	}
 	
 	/**
@@ -264,9 +337,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	 * if so.
 	 */
 	@SuppressLint("DefaultLocale")
-	private void updateScore()
+	private void increaseScore()
 	{
-		// If last was correct, then add to score
 		if (logic.erSidsteBogstavKorrekt())
 			score++;
 		
@@ -299,7 +371,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Set all buttons inactive
 		disableButtons();
 		
-		// Promt for saving Highscore
+		// Prompt for saving Highscore
 		promptSave();
 	}
 	
@@ -441,9 +513,17 @@ public class GameFragment extends Fragment implements View.OnClickListener
 					public void onClick(DialogInterface dialog, int which)
 					{
 						// Get the EditText view
-						EditText txt = view.findViewById(R.id.saveName);
-						// Save the highscore
-						saveHighscore(txt.getText().toString());
+						EditText viewById 	= view.findViewById(R.id.saveName);
+						String txt 			= viewById.getText().toString();
+						
+						//Check if name is entered
+						if (txt.isEmpty() || txt.equals(" "))
+							Toast.makeText(getContext(), R.string.saveNoName, Toast.LENGTH_LONG).show();
+						else {
+							// Save the highscore
+							saveHighscore(txt);
+						}
+						
 						// Go back to main menu
 						goMainMenu();
 					}
