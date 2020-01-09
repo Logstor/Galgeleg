@@ -197,7 +197,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		// Animate
 		img_correct.animate()
 				.setDuration(550)
-				.translationY(-300)
+				.translationY(-200)
+				.alphaBy(-0.8f)
 				.start();
 	}
 	
@@ -213,6 +214,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		img_wrong.animate()
 				.setDuration(550)
 				.translationYBy(1100)
+				.alphaBy(-0.8f)
 				.start();
 	}
 	
@@ -231,6 +233,7 @@ public class GameFragment extends Fragment implements View.OnClickListener
 		image.setVisibility(View.VISIBLE);
 		image.setX(location[0]);
 		image.setY(location[1]);
+		image.setAlpha(1f);
 	}
 	
 	/**
@@ -336,7 +339,8 @@ public class GameFragment extends Fragment implements View.OnClickListener
 	@SuppressLint("DefaultLocale")
 	private void increaseScore()
 	{
-		score++;
+		if (logic.erSidsteBogstavKorrekt())
+			score++;
 		
 		// Set the text view
 		txt_score.setText( String.format("%s %d", getResources().getString(R.string.score), score) );
@@ -514,13 +518,14 @@ public class GameFragment extends Fragment implements View.OnClickListener
 						
 						//Check if name is entered
 						if (txt.isEmpty() || txt.equals(" "))
-							Toast.makeText(getContext(), "No name", Toast.LENGTH_LONG).show();
+							Toast.makeText(getContext(), R.string.saveNoName, Toast.LENGTH_LONG).show();
 						else {
 							// Save the highscore
 							saveHighscore(txt);
-							// Go back to main menu
-							goMainMenu();
 						}
+						
+						// Go back to main menu
+						goMainMenu();
 					}
 				})
 				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()

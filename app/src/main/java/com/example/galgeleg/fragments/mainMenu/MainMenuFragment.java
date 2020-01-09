@@ -2,6 +2,9 @@ package com.example.galgeleg.fragments.mainMenu;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -87,6 +90,29 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 	}
 	
 	/**
+	 * Finds out whether there's a network connection or not.
+	 * @return true or false
+	 */
+	private boolean isNetworkAvailable() {
+		getContext();
+		
+		try {
+			ConnectivityManager connectivityManager =
+					(ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+			
+			return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+		}
+		catch (NullPointerException e)
+		{
+			System.err.println("WARNING: No network connection!");
+			return false;
+		}
+		
+	}
+	
+	/**
 	 * This method changes the fragment to the
 	 * GameFragment.
 	 */
@@ -106,10 +132,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			@Override
 			protected void onPreExecute()
 			{
-				//TODO: Add check for internet connection is available
-				// Otherwise use hardcoded words
-				
-				//TODO: Implement caching
+				// Checking network connectivity
+				if (!isNetworkAvailable())
+					cancel(false);
 			}
 			
 			@Override
@@ -148,7 +173,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener
 			protected void onCancelled()
 			{
 				super.onCancelled();
-				//TODO: Implement me!
 			}
 			
 		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
